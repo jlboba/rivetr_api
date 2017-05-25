@@ -31,12 +31,20 @@ class UsersController < ApplicationController
 
   # POST /users
   def create
-    @user = User.new(user_params)
 
-    if @user.save
-      render json: @user, status: :created, location: @user
+    # checks if username is unique
+    notUnique = User.find_by_username(user_params[:username])
+
+    if notUnique
+      render json: {error: "Username already taken, please choose another one!"}
     else
-      render json: @user.errors, status: :unprocessable_entity
+      @user = User.new(user_params)
+
+      if @user.save
+        render json: @user, status: :created, location: @user
+      else
+        render json: @user.errors, status: :unprocessable_entity
+      end
     end
   end
 
@@ -54,6 +62,16 @@ class UsersController < ApplicationController
     @user.destroy
   end
 
+  # LOGIN /users/login
+  def login
+    user = User.find_by(username: params[:user][:username])
+    if user && user.authenticate(params[:user][:password])
+      render json: {status: 200, user: user}
+    else
+      render json: {status: 401, message: "Unauthorized"}
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
@@ -62,6 +80,6 @@ class UsersController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def user_params
-      params.require(:user).permit(:username, :display_name, :password, :profile_photo, :language_learning, :language_known)
+      params.require(:user).permit(:username, :display_name, :profile_photo, :language_learning, :language_known, :password_digest, :password)
     end
 end
