@@ -9,7 +9,9 @@ class UsersController < ApplicationController
       { rivs: {include: :replies} },
       :replies,
       { follower_follows: {include: :follower} },
-      { followed_follows: {include: :followee} }
+      { followed_follows: {include:
+        { followed: {include: :rivs} }
+      }}
     ]);
   end
 
@@ -19,7 +21,9 @@ class UsersController < ApplicationController
       { rivs: {include: :replies} },
       :replies,
       { follower_follows: {include: :follower} },
-      { followed_follows: {include: :followee} }
+      { followed_follows: {include:
+        { followed: {include: :rivs} }
+      }}
     ]);
   end
 

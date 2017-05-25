@@ -10,14 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170525171949) do
+ActiveRecord::Schema.define(version: 20170525175555) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "follows", force: :cascade do |t|
     t.integer "follower_id"
-    t.integer "followee_id"
+    t.integer "followed_id"
   end
 
   create_table "replies", force: :cascade do |t|
