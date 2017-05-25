@@ -24,15 +24,6 @@ class RepliesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /replies/1
-  def update
-    if @reply.update(reply_params)
-      render json: @reply
-    else
-      render json: @reply.errors, status: :unprocessable_entity
-    end
-  end
-
   # DELETE /replies/1
   def destroy
     @reply.destroy
