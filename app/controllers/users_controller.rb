@@ -5,12 +5,22 @@ class UsersController < ApplicationController
   def index
     @users = User.all
 
-    render json: @users.to_json(include: [:rivs, :replies, :follower_follows, :followed_follows])
+    render json: @users.to_json(include: [
+      { rivs: {include: :replies} },
+      :replies,
+      { follower_follows: {include: :follower} },
+      { followed_follows: {include: :followee} }
+    ]);
   end
 
   # GET /users/1
   def show
-    render json: @user.to_json(include: [:rivs, :replies, :follower_follows, :followed_follows])
+    render json: @user.to_json(include: [
+      { rivs: {include: :replies} },
+      :replies,
+      { follower_follows: {include: :follower} },
+      { followed_follows: {include: :followee} }
+    ]);
   end
 
   # POST /users
