@@ -1,7 +1,7 @@
 class FollowsController < ApplicationController
-  # POST /follows/follower_id/followed_id
+  # POST /follows
   def create
-    @follow = Follow.create(follower_id: params[:follower_id], followed_id: params[:followed_id]);
+    @follow = Follow.new(follow_params)
 
     if @follow.save
       render json: @follow, status: :created
