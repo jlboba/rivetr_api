@@ -11,7 +11,8 @@ class UsersController < ApplicationController
       { follower_follows: {include: :follower} },
       { followed_follows: {include:
         { followed: {include: :rivs} }
-      }}
+      }},
+      { likes: {include: :riv} }
     ]);
   end
 

@@ -3,6 +3,8 @@ class User < ApplicationRecord
   has_many :rivs
   # replies the user has posted themselves
   has_many :replies
+  # rivs the user liked
+  has_many :likes
 
   # other users that follow the user being looked at
   has_many :follower_follows, foreign_key: :followed_id, class_name: "Follow"
