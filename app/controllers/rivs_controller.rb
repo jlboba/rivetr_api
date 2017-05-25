@@ -5,12 +5,12 @@ class RivsController < ApplicationController
   def index
     @rivs = Riv.all
 
-    render json: @rivs
+    render json: @rivs.to_json(include: :replies)
   end
 
   # GET /rivs/1
   def show
-    render json: @riv
+    render json: @riv.to_json(include: :replies)
   end
 
   # POST /rivs
@@ -37,6 +37,6 @@ class RivsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def riv_params
-      params.require(:riv).permit(:content, :likes, :user_id)
+      params.require(:riv).permit(:content, :likes, :user_id, :photo)
     end
 end
