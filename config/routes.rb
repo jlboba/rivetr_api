@@ -4,6 +4,6 @@ Rails.application.routes.draw do
   resources :users
 
   # custom
-  post 'follows/:follower_id/:followed_id', to: "follows#create"
+  post 'follows', to: "follows#create"
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
