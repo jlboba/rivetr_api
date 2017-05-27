@@ -2,7 +2,8 @@ class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
   before_action :authenticate_token, except: [:login, :create, :index, :show]
   before_action :authorize_user, except: [:login, :create, :index, :show]
-  
+  wrap_parameters :user, include: [:username, :display_name, :profile_photo, :language_learning, :language_known, :password_digest, :password]
+
   # GET /users
   def index
     @users = User.all
