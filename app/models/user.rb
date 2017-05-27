@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  # password
+  has_secure_password
   # rivs the user has posted themselves
   has_many :rivs
   # replies the user has posted themselves
