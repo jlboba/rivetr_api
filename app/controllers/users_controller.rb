@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
   before_action :authenticate_token, except: [:login, :create, :index, :show]
   before_action :authorize_user, except: [:login, :create, :index, :show]
-  wrap_parameters :user, include: [:username, :display_name, :profile_photo, :language_learning, :language_known, :password_digest, :password]
+  wrap_parameters :user, include: [:username, :display_name, :profile_photo, :language_learning, :language_known, :password_digest, :password, :bio]
 
   # GET /users
   def index
@@ -44,7 +44,7 @@ class UsersController < ApplicationController
     notUnique = User.find_by_username(user_params[:username])
 
     if notUnique
-      render json: {error: "Username already taken, please choose another one!"}
+      render json: {error: "Username already taken, please choose another one!"}, status: :not_acceptable
     else
       @user = User.new(user_params)
 
@@ -106,6 +106,6 @@ class UsersController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def user_params
-      params.require(:user).permit(:username, :display_name, :profile_photo, :language_learning, :language_known, :password_digest, :password)
+      params.require(:user).permit(:username, :display_name, :profile_photo, :language_learning, :language_known, :password_digest, :password, :bio)
     end
 end
