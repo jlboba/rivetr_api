@@ -73,10 +73,17 @@ class UsersController < ApplicationController
 
   # PATCH/PUT /users/1
   def update
-    if @user.update(user_params)
-      render json: @user
+    # checks if username is unique
+    notUnique = User.find_by_username(user_params[:username])
+
+    if notUnique
+      render json: {error: "Username already taken, please choose another one!"}, status: :not_acceptable
     else
-      render json: @user.errors, status: :unprocessable_entity
+      if @user.update(user_params)
+        render json: @user
+      else
+        render json: @user.errors, status: :unprocessable_entity
+      end
     end
   end
 
