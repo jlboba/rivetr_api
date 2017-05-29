@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
-  before_action :authenticate_token, except: [:login, :create, :index, :show]
-  before_action :authorize_user, except: [:login, :create, :index, :show]
+  before_action :authenticate_token, except: [:login, :create, :index, :show, :find_by_username]
+  before_action :authorize_user, except: [:login, :create, :index, :show, :find_by_username]
   wrap_parameters :user, include: [:username, :display_name, :profile_photo, :language_learning, :language_known, :password_digest, :password, :biography]
 
   # GET /users
@@ -16,7 +16,7 @@ class UsersController < ApplicationController
         { followed: {include: :rivs} }
       }},
       { likes: {include: [:riv, :reply]} }
-    ]);
+    ])
   end
 
   # GET /users/1
@@ -29,7 +29,22 @@ class UsersController < ApplicationController
         { followed: {include: :rivs} }
       }},
       { likes: {include: [:riv, :reply]} }
-    ]);
+    ])
+  end
+
+  # GET /:username
+  def find_by_username
+    @username = User.find_by_username(params[:username])
+
+    render json: @username.to_json(include: [
+      { rivs: {include: :replies} },
+      :replies,
+      { follower_follows: {include: :follower} },
+      { followed_follows: {include:
+        { followed: {include: :rivs} }
+      }},
+      { likes: {include: [:riv, :reply]} }
+    ])
   end
 
   # # GET /users/logged/1
@@ -58,10 +73,17 @@ class UsersController < ApplicationController
 
   # PATCH/PUT /users/1
   def update
-    if @user.update(user_params)
-      render json: @user
+    # checks if username is unique
+    notUnique = User.find_by_username(user_params[:username])
+
+    if notUnique
+      render json: {error: "Username already taken, please choose another one!"}, status: :not_acceptable
     else
-      render json: @user.errors, status: :unprocessable_entity
+      if @user.update(user_params)
+        render json: @user
+      else
+        render json: @user.errors, status: :unprocessable_entity
+      end
     end
   end
 
@@ -77,7 +99,7 @@ class UsersController < ApplicationController
       token = create_token(user.id, user.username)
       render json: {status: 200, user: user, token: token}
     else
-      render json: {status: 401, message: "Unauthorized"}
+      render json: {status: 401, message: "incorrect login info, try again!"}
     end
   end
 
