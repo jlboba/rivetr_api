@@ -54,7 +54,6 @@ class UsersController < ApplicationController
 
   # POST /users
   def create
-
     # checks if username is unique
     notUnique = User.find_by_username(user_params[:username])
 
