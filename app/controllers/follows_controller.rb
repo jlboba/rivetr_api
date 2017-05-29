@@ -1,4 +1,6 @@
 class FollowsController < ApplicationController
+  wrap_parameters :follow, include: [:follower_id, :followed_id]
+
   # POST /follows
   def create
     @follow = Follow.new(follow_params)
