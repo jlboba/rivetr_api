@@ -36,7 +36,15 @@ class UsersController < ApplicationController
   def find_by_username
     @username = User.find_by_username(params[:username])
 
-    render json: @username
+    render json: @username.to_json(include: [
+      { rivs: {include: :replies} },
+      :replies,
+      { follower_follows: {include: :follower} },
+      { followed_follows: {include:
+        { followed: {include: :rivs} }
+      }},
+      { likes: {include: [:riv, :reply]} }
+    ])
   end
 
   # # GET /users/logged/1
