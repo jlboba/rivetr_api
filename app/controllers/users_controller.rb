@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
-  before_action :authenticate_token, except: [:login, :create, :index, :show]
-  before_action :authorize_user, except: [:login, :create, :index, :show]
+  before_action :authenticate_token, except: [:login, :create, :index, :show, :find_by_username]
+  before_action :authorize_user, except: [:login, :create, :index, :show, :find_by_username]
   wrap_parameters :user, include: [:username, :display_name, :profile_photo, :language_learning, :language_known, :password_digest, :password, :biography]
 
   # GET /users
@@ -16,7 +16,7 @@ class UsersController < ApplicationController
         { followed: {include: :rivs} }
       }},
       { likes: {include: [:riv, :reply]} }
-    ]);
+    ])
   end
 
   # GET /users/1
@@ -29,7 +29,14 @@ class UsersController < ApplicationController
         { followed: {include: :rivs} }
       }},
       { likes: {include: [:riv, :reply]} }
-    ]);
+    ])
+  end
+
+  # GET /:username
+  def find_by_username
+    @username = User.find_by_username(params[:username])
+
+    render json: @username
   end
 
   # # GET /users/logged/1
