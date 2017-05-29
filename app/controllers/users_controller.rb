@@ -54,7 +54,6 @@ class UsersController < ApplicationController
 
   # POST /users
   def create
-
     # checks if username is unique
     notUnique = User.find_by_username(user_params[:username])
 
@@ -73,11 +72,25 @@ class UsersController < ApplicationController
 
   # PATCH/PUT /users/1
   def update
-    # checks if username is unique
-    notUnique = User.find_by_username(user_params[:username])
+    # checks if they changed their password
+    if params[:password] != nil
+      hashed_password = BCrypt::Password.create(params[:password])
+      @user.password = hashed_password
+    end
 
-    if notUnique
-      render json: {error: "Username already taken, please choose another one!"}, status: :not_acceptable
+    # checks if username exists
+    userExists = User.find_by_username(user_params[:username])
+
+    if userExists
+      if @user.id === userExists.id
+        if @user.update(user_params)
+          render json: @user
+        else
+          render json: @user.errors, status: :unprocessable_entity
+        end
+      else
+        render json: {error: "Username already taken, please choose another one!"}, status: :not_acceptable
+      end
     else
       if @user.update(user_params)
         render json: @user
