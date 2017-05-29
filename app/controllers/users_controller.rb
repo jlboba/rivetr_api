@@ -92,7 +92,7 @@ class UsersController < ApplicationController
       token = create_token(user.id, user.username)
       render json: {status: 200, user: user, token: token}
     else
-      render json: {status: 401, message: "Unauthorized"}
+      render json: {status: 401, message: "incorrect login info, try again!"}
     end
   end
 
