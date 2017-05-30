@@ -10,7 +10,7 @@ class UsersController < ApplicationController
 
     render json: @users.to_json(include: [
       { rivs: {include: :replies} },
-      :replies,
+      { replies: {include: :riv} },
       { follower_follows: {include: :follower} },
       { followed_follows: {include:
         { followed: {include: :rivs} }
@@ -23,7 +23,7 @@ class UsersController < ApplicationController
   def show
     render json: @user.to_json(include: [
       { rivs: {include: :replies} },
-      :replies,
+      { replies: {include: :riv} },
       { follower_follows: {include: :follower} },
       { followed_follows: {include:
         { followed: {include: :rivs} }
