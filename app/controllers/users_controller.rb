@@ -38,7 +38,7 @@ class UsersController < ApplicationController
 
     render json: @username.to_json(include: [
       { rivs: {include: :replies} },
-      :replies,
+      { replies: {include: :riv} },
       { follower_follows: {include: :follower} },
       { followed_follows: {include:
         { followed: {include: :rivs} }
