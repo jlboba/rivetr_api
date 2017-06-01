@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :update, :destroy]
-  before_action :authenticate_token, except: [:login, :create, :index, :show, :find_by_username]
-  before_action :authorize_user, except: [:login, :create, :index, :show, :find_by_username]
+  before_action :authenticate_token, except: [:login, :create, :index, :show, :find_by_username, :find_by_language]
+  before_action :authorize_user, except: [:login, :create, :index, :show, :find_by_username, :find_by_language]
   wrap_parameters :user, include: [:username, :display_name, :profile_photo, :language_learning, :language_known, :password_digest, :password, :biography]
 
   # GET /users
@@ -47,7 +47,18 @@ class UsersController < ApplicationController
     ])
   end
 
-  # # GET /users/logged/1
+  # GET by language /find/:status/:language
+  def find_by_language
+    if params[:status] == 'known'
+      found_users = User.find_by(language_known: params[:language])
+      render json: found_users
+    else
+      found_users = User.find_by(language_learning: params[:language])
+      render json: found_users
+    end
+  end
+
+  # GET /users/logged/1
   def current_user
     render json: get_current_user
   end
