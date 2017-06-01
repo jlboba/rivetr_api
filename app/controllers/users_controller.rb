@@ -15,7 +15,7 @@ class UsersController < ApplicationController
       { followed_follows: {include:
         { followed: {include: [:rivs, replies: {include: {riv: {include: :user}}}]} }
       }},
-      { likes: {include: [riv: {include: :user}, reply: {include: :user}]} }
+      { likes: {include: [{reply: {include: :user}}, {riv: {include: :user}}]}}
     ])
   end
 
@@ -28,7 +28,7 @@ class UsersController < ApplicationController
       { followed_follows: {include:
         { followed: {include: [:rivs, replies: {include: {riv: {include: :user}}}]} }
       }},
-      { likes: {include: [riv: {include: :user}, reply: {include: :user}]} }
+      { likes: {include: [{reply: {include: :user}}, {riv: {include: :user}}]}}
     ])
   end
 
@@ -43,7 +43,7 @@ class UsersController < ApplicationController
       { followed_follows: {include:
         { followed: {include: [:rivs, replies: {include: {riv: {include: :user}}}]} }
       }},
-      { likes: {include: [riv: {include: :user}, reply: {include: :user}]} }
+      { likes: {include: [{reply: {include: :user}}, {riv: {include: :user}}]}}
     ])
   end
 
