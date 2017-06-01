@@ -50,10 +50,10 @@ class UsersController < ApplicationController
   # GET by language /find/:status/:language
   def find_by_language
     if params[:status] == 'known'
-      found_users = User.find_by(language_known: params[:language])
+      found_users = User.where(language_known: params[:language])
       render json: found_users
     else
-      found_users = User.find_by(language_learning: params[:language])
+      found_users = User.where(language_learning: params[:language])
       render json: found_users
     end
   end
