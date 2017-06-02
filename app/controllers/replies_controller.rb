@@ -10,7 +10,7 @@ class RepliesController < ApplicationController
 
   # GET /replies/1
   def show
-    render json: @reply.to_json(include: {riv: {include: :user}});
+    render json: @reply.to_json(include: [{riv: {include: :user}}, :user]);
   end
 
   # POST /replies
