@@ -10,7 +10,7 @@ class RivsController < ApplicationController
 
   # GET /rivs/1
   def show
-    render json: @riv.to_json(include: :replies)
+    render json: @riv.to_json(include: {replies: {include: :user}})
   end
 
   # POST /rivs
