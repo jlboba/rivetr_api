@@ -37,6 +37,6 @@ class RepliesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def reply_params
-      params.require(:reply).permit(:content, :photo, :correction, :user_id, :riv_id)
+      params.require(:reply).permit(:content, :photo, :correction, :user_id, :riv_id, :explanation)
     end
 end
