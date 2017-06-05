@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  root 'welcome#index'
   resources :likes, except: [:update]
   resources :replies, except: [:update]
   resources :rivs, except: [:update]
